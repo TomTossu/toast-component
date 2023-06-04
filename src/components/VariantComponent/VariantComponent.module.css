@@ -1,0 +1,19 @@
+.row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  min-height: 3rem;
+}
+
+.row:not(:last-of-type) {
+  padding-bottom: 16px;
+  border-bottom: 1px dotted hsl(250deg 80% 80% / 0.5);
+  margin-bottom: 16px;
+}
+
+.label {
+  flex-basis: 160px;
+  text-align: right;
+  font-weight: 700;
+}
