@@ -14,6 +14,8 @@ import styles from "./Toast.module.css";
 import { removeItemArrayByID } from "../../utils/utils";
 import { ToastContext } from "../ToastProvider/ToastProvider";
 
+import { useKeyDown } from "../../hooks/use-keydown";
+
 const ICONS_BY_VARIANT = {
   notice: Info,
   warning: AlertTriangle,
@@ -26,13 +28,25 @@ function Toast({ trigger, message, id }) {
 
   const Tag = ICONS_BY_VARIANT[trigger];
 
+  const handleEscape = React.useCallback(() => {
+    setToastArr([]);
+  }, [setToastArr]);
+
+  useKeyDown("Escape", handleEscape);
+
   return (
     <div className={`${styles.toast} ${styles[trigger]}`}>
       <div className={styles.iconContainer}>
         <Tag size={24} />
       </div>
-      <p className={styles.content}>{message}</p>
-      <button className={styles.closeButton}>
+      <p className={styles.content}>
+        <VisuallyHidden>{`${trigger} - `}</VisuallyHidden>
+        {message}
+      </p>
+      <button
+        className={styles.closeButton}
+        aria-label="Dismiss message"
+        aria-live="off">
         <X
           size={24}
           onClick={() => {
@@ -42,7 +56,6 @@ function Toast({ trigger, message, id }) {
             setToastArr(newArr);
           }}
         />
-        <VisuallyHidden>Dismiss message</VisuallyHidden>
       </button>
     </div>
   );
